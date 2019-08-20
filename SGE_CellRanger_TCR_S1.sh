@@ -1,7 +1,7 @@
 #!/bin/bash
 #$ -N S1_TCR
 # #$ -V # Job has the same environment variables as the submission shell
-#$ -l h=fccccappdevn02
+#$ -l h=highmem
 #$ -pe peomics 8 # -pe threads
 #$ -l mem_free=8G # h_vmem=4G hard limit of the maximum amount of vitual memory # mem_free=8G, memory needed
 #$ -o "logs/S1_TCR.stdout"
