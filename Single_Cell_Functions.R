@@ -17,7 +17,7 @@ Read10XRL <- function(data.dir=NULL) {
   
   mat <- readMM(file = matrix.path)
   
-  feature.names = read.delim(features.path, 
+  feature.names = read.delim(feature.path, 
                              header = FALSE,
                              stringsAsFactors = FALSE)
   barcode.names = read.delim(barcode.path, 
@@ -33,3 +33,36 @@ Read10XRL <- function(data.dir=NULL) {
   return (mat)
   
 }
+
+
+# Google colors
+google.red <- '#EA4335'
+google.yellow <- '#FBBC05'
+google.green <- '#34A853'
+google.blue <- '#4285F4'
+
+
+
+#########
+## The first letter of the first world
+capitalizeRL <- function(x) {
+  substr(x,1,1) <- toupper(substr(x,1,1))
+  return(x)
+}
+
+RenameCellRL <- function(x, original.cell, target.cell) {
+  n <- length(original.cell)
+  
+  for (i in 1:n) {
+    x[x==original.cell[i]] <- target.cell[i]
+  }
+  
+  return (x)
+}
+
+
+#############
+fantom5 <- readRDS(file='SingleR_FANTOM5_Reference.rds') 
+
+
+
