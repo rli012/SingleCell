@@ -12,6 +12,13 @@ mat <- Read10XRL(data.dir = matrixDir)
 mat[1:5,1:5]
 dim(mat)
 
+### ONE LINE COMMAND
+ctrl <- CreateSeuratObject(mat) %>% 
+  PercentageFeatureSet(pattern = "^MT-", col.name = "percent_mt") %>% 
+  SCTransform(vars.to.regress = "percent.mt") %>% 
+  RunPCA() %>% FindNeighbors(dims = 1:30) %>% 
+  RunTSNE(dims = 1:30) %>% FindClusters()
+
 
 ##################################################################
 ####### STEP 2. Create Seurat Object and Cell QC
@@ -66,10 +73,9 @@ message(paste0(ncol(ctrl[['RNA']]@counts), '/', ncol(mat), ' of cells are kept')
 # === TODO ===
 # vst ?
 # CombinePlots doesn't work
-# sctransform
 
-
-# Log Normalization
+###
+### Log Normalization (For DE Analysis)
 ctrl <- NormalizeData(object = ctrl, normalization.method = "LogNormalize", 
                       scale.factor = 10000)
 ctrl[['RNA']]@data[1:5,1:5]
@@ -115,9 +121,18 @@ ctrl <- ScaleData(ctrl, vars.to.regress = "percent_mt")
 ###
 
 
+###
+### Run sctransform (For PCA, Clustering, etc.)
+# Replaces NormalizeData, ScaleData, and FindVariableFeatures
+ctrl <- SCTransform(ctrl, vars.to.regress = "percent_mt", verbose = FALSE)
+ctrl[['SCT']]@scale.data[1:5,1:5]
+
+
 
 ####################################################################
 ####### STEP 4. PCA & UMAP & tSNE
+
+DefaultAssay(ctrl) <- "SCT"
 
 ###
 ### Perform linear dimensional reduction
@@ -152,7 +167,7 @@ ElbowPlot(ctrl)
 
 # Cluster the cells
 ctrl <- FindNeighbors(ctrl, dims = 1:10)
-ctrl <- FindClusters(ctrl, resolution = 0.5)
+#ctrl <- FindClusters(ctrl, resolution = 0.5)
 
 # Look at cluster IDs of the first 5 cells
 head(Idents(ctrl), 5)
