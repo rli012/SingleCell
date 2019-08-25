@@ -29,12 +29,13 @@ ctrl <- CreateSeuratObject(mat) %>%
 project <- 'pbmc3k'
 ctrlSample <- 'CTRL'
 
-ctrl <- CreateSeuratObject(counts = mat, project = project, min.cells = 3)
+min.cells <- 3
+ctrl <- CreateSeuratObject(counts = mat, project = project, min.cells = min.cells)
 ctrl@meta.data$sample <- ctrlSample
 head(ctrl@meta.data)
 ctrl[['RNA']]@counts[1:5,1:5]
 
-ctrl[["percent_mt"]] <- PercentageFeatureSet(ctrl, pattern = "^MT-")
+#ctrl[["percent_mt"]] <- PercentageFeatureSet(ctrl, pattern = "^MT-")
 ctrl$percent_mt <- PercentageFeatureSet(ctrl, pattern = "^MT-")
 names(ctrl@meta.data)
 
