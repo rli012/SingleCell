@@ -3,7 +3,8 @@
 ## Courses/Tutorials
 
 1. Broad Institute: [Analysis of Single Cell RNAseq Data](https://broadinstitute.github.io/2019_scWorkshop/)
-
+2. Hemberg Lab: [Analysis of Single Cell RNAseq Data](https://scrnaseq-course.cog.sanger.ac.uk/website/index.html)
+3. ISMB: [SingleCellTranscriptomeTutorial](https://github.com/SingleCellTranscriptomics)
 
 
 ## Tools
