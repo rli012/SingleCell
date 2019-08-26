@@ -20,6 +20,10 @@
 1. dynverse: https://benchmark.dynverse.org/
 
 #### Cell Type Annotation
+1. SingleR
+2. cellassign
+3. celaref
+4. Moana (for PBMC only)
 
 
 ## Databases
