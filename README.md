@@ -30,7 +30,7 @@
 
 ## Databases
 
-1. Human Cell Atlas
+1. [Human Cell Atlas Data Portal](https://data.humancellatlas.org/)
 2. [Single Cell Portal](https://portals.broadinstitute.org/single_cell)
 3. Human Tumor Atlas Network
 
