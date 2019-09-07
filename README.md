@@ -47,3 +47,12 @@
 #### Cell Type Annotation
 
 1. [Hierarchical cell type classification using mass, heterogeneous RNA-seq data from human primary cells](https://doi.org/10.1101/634097)
+
+
+#### Reviews/Method Evaluation
+
+1. [Bias, robustness and scalability in single-cell differential expression analysis](https://www.nature.com/articles/nmeth.4612)  
+
+2. [Comparative analysis of differential gene expression analysis tools for single-cell RNA sequencing data](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-019-2599-6)  
+
+3. [Single-Cell RNA-Seq Technologies and Related Computational Data Analysis](https://www.frontiersin.org/articles/10.3389/fgene.2019.00317/full)
