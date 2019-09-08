@@ -26,6 +26,7 @@
 3. celaref
 4. Moana (Python package, for PBMC only)
 5. [CellO](https://github.com/deweylab/CellO): Cell Ontology-based classification (Python package)
+6. [scMatch](https://github.com/forrest-lab/scMatch) (Python package)
 
 
 ## Databases
