@@ -6,7 +6,7 @@
 2. Hemberg Lab: [Analysis of Single Cell RNAseq Data](https://scrnaseq-course.cog.sanger.ac.uk/website/index.html)
 3. ISMB: [SingleCellTranscriptomeTutorial](https://github.com/SingleCellTranscriptomics)
 4. ontoProc: [Ontology interfaces for Bioconductor, with focus on cell type identification](http://www.bioconductor.org/packages/devel/bioc/vignettes/ontoProc/inst/doc/ontoProc.html)
-5. [Current best practices in single‐cell RNA‐seq analysis: a tutorial](https://www.embopress.org/doi/full/10.15252/msb.20188746)
+5. [Current best practices in single‐cell RNA‐seq analysis: a tutorial](https://www.embopress.org/doi/full/10.15252/msb.20188746); https://github.com/theislab/single-cell-tutorial
 
 
 ## Tools
