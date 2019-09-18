@@ -50,6 +50,10 @@
 
 1. [Hierarchical cell type classification using mass, heterogeneous RNA-seq data from human primary cells](https://doi.org/10.1101/634097)
 
+2. [Supervised classification enables rapid annotation of cell atlases](https://www.nature.com/articles/s41592-019-0535-3)  
+
+3. [Probabilistic cell-type assignment of single-cell RNA-seq for tumor microenvironment profiling](https://www.nature.com/articles/s41592-019-0529-1)  
+
 
 #### Reviews/Method Evaluation
 
@@ -58,3 +62,7 @@
 2. [Comparative analysis of differential gene expression analysis tools for single-cell RNA sequencing data](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-019-2599-6)  
 
 3. [Single-Cell RNA-Seq Technologies and Related Computational Data Analysis](https://www.frontiersin.org/articles/10.3389/fgene.2019.00317/full)
+
+4. [Supervised clustering for single-cell analysis](https://www.nature.com/articles/s41592-019-0534-4)  
+
+5. [A comparison of automatic cell identification methods for single-cell RNA sequencing data](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1795-z)  
