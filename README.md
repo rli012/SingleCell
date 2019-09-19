@@ -28,7 +28,8 @@
 4. Moana (Python package, for PBMC only)
 5. [CellO](https://github.com/deweylab/CellO): Cell Ontology-based classification (Python package)
 6. [scMatch](https://github.com/forrest-lab/scMatch) (Python package)
-
+7. [Cell Blast](http://cblast.gao-lab.org/)
+8. [Garnett](https://cole-trapnell-lab.github.io/garnett/)
 
 ## Databases
 
