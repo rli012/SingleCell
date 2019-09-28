@@ -67,3 +67,5 @@
 4. [Supervised clustering for single-cell analysis](https://www.nature.com/articles/s41592-019-0534-4)  
 
 5. [A comparison of automatic cell identification methods for single-cell RNA sequencing data](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1795-z)  
+
+6. [Mapping human cell phenotypes to genotypes with single-cell genomics](https://science.sciencemag.org/content/365/6460/1401)  
