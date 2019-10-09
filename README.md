@@ -37,8 +37,12 @@
 2. [Single Cell Portal](https://portals.broadinstitute.org/single_cell)
 3. Human Tumor Atlas Network
 
-4. [Cell Markers](https://www.biolegend.com/en-us/cell-markers)
-5. [CellMarker](http://biocc.hrbmu.edu.cn/CellMarker/#)
+4. [Human Liver Cell Atlas](http://human-liver-cell-atlas.ie-freiburg.mpg.de/)
+5. [KIT Kidney Interactive Transcriptomics](http://humphreyslab.com/SingleCell/displaycharts.php)
+
+6. [Cell Markers](https://www.biolegend.com/en-us/cell-markers)
+7. [CellMarker](http://biocc.hrbmu.edu.cn/CellMarker/#)
+
 
 
 ## Literatures
