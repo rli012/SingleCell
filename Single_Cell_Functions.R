@@ -28,7 +28,9 @@ Read10XRL <- function(data.dir=NULL) {
   
   dupIdx <- which(duplicated(rownames(mat)))
   
-  rownames(mat)[dupIdx] <- paste0(rownames(mat)[dupIdx], '[dup]')
+   if (length(dupIdx)!=0) {
+    rownames(mat)[dupIdx] <- paste0(rownames(mat)[dupIdx], '[dup]')
+  }
   
   return (mat)
   
