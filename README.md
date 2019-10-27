@@ -22,7 +22,7 @@
 1. dynverse: https://benchmark.dynverse.org/
 
 #### Cell Type Annotation
-1. SingleR (R pacakge)
+1. [SingleR](https://bioconductor.org/packages/devel/bioc/vignettes/SingleR/inst/doc/SingleR.html) (R pacakge)
 2. cellassign
 3. celaref
 4. Moana (Python package, for PBMC only)
