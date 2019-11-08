@@ -60,3 +60,64 @@ ht <- Heatmap(as.matrix(sig.exprs), name='Log2(TP10K)', show_row_names = TRUE, s
               #heatmap_legend_param = list(legend_direction='horizontal'),
               col = colorRamp2(c(0, floor(max(sig.exprs))), c("grey95", "red")))
 ht
+
+
+########### Cell composition
+
+dataForBarPlot$Encode_Blueprint_Subtype <- as.character(dataForBarPlot$Encode_Blueprint_Subtype)
+
+cells.for.plot <- c('CD4+ Naive T cells','CD4+ Tcm','CD4+ Tem',
+           'CD8+ Naive T cells','CD8+ Tcm','CD8+ Tem',
+           'Tregs','NK cells','Naive B-cells','Memory B-cells',
+           'Class-switched memory B-cells')
+
+dataForBarPlot$Encode_Blueprint_Subtype
+
+
+idx <- which(! dataForBarPlot$Encode_Blueprint_Subtype %in% cells.for.plot)
+
+dataForBarPlot$Encode_Blueprint_Subtype[idx] <- 'Others'
+
+
+idx <- which(dataForBarPlot$Encode_Blueprint_Subtype %in% cells.for.plot)
+idx
+
+unique(dataForBarPlot$Encode_Blueprint_Subtype)
+
+dataForBarPlot$Encode_Blueprint_Subtype <- factor(dataForBarPlot$Encode_Blueprint_Subtype,
+                                                  levels=rev(c(cells.for.plot,'Others')))
+
+cellColor <- colorPanel22[1:12]
+cellColor
+
+#### stacked
+ggplot(data=dataForBarPlot, aes(x=sample, y=proportion, 
+                                fill=Encode_Blueprint_Subtype)) +
+  geom_bar(stat='identity', width=0.8) + #coord_flip()
+  #scale_y_discrete(limits=rev(unique(dataForBarPlot$Encode_Blueprint_Subtype))) +
+  #ylim(0,50) +
+  #geom_errorbar(aes(ymin=expr, ymax=expr+sd), width=.2, size=0.5, #expr-sd
+  #              position=position_dodge(.9)) +
+  labs(x='', y=expression('Proportion of Cells (%)')) +
+  #scale_y_continuous(trans = 'sqrt',
+  #                   breaks = c(0,2.5,50,250,750),
+  #                   labels = c(0,2.5,50,250,750)) +
+  #scale_y_sqrt() +
+  #scale_y_continuous(trans='log2') +
+  #scale_fill_manual(values = rep('black',nrow(dataForBarPlot))) +
+  scale_fill_manual(values = cellColor) +
+  theme_bw()+
+  theme(legend.title = element_blank(),
+        legend.text = element_text(size=14),
+        legend.position = 'right') +
+  theme(axis.title=element_text(size=16),
+        axis.text = element_text(color='black', size=14),
+        axis.text.x = element_text(angle = 45, hjust=1)) +
+  theme(axis.line = element_line(colour = "black"),
+        panel.border = element_blank(),
+        panel.background = element_blank(),
+        panel.grid = element_blank(),
+        panel.grid.major = element_blank()) +
+  theme(plot.margin =  margin(t = 0.25, r = 0.25, b = 0.25, l = 1, unit = "cm"))
+
+# 800*500
