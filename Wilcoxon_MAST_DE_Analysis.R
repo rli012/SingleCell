@@ -236,6 +236,20 @@ for (cell in cells) {
       
 }
 
+#lrtGroup <- paste0('grp', stimSample)
+#summaryCond <- summary(zlmdata, doLRT=lrtGroup)
+#summaryDt <- summaryCond$datatable
+
+#fcHurdle <- merge(summaryDt[contrast==lrtGroup & component=='logFC', .(primerid, coef)], #, ci.hi, ci.lo #logFC coefficients
+#                  summaryDt[contrast==lrtGroup & component=='H',.(primerid, `Pr(>Chisq)`)], #hurdle P values
+#                  by='primerid')
+
+#fcHurdle[,FDR:=p.adjust(`Pr(>Chisq)`, 'BH')]
+
+#fcHurdle <- data.frame(fcHurdle, row.names = 1)
+
+#colnames(fcHurdle) <- c('logFC','pval')
+#fcHurdle$FDR <- p.adjust(fcHurdle$pval, method = 'BH')
 
 
 ## barplot
