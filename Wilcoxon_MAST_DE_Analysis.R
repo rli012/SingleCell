@@ -252,6 +252,113 @@ for (cell in cells) {
 #fcHurdle$FDR <- p.adjust(fcHurdle$pval, method = 'BH')
 
 
+### edgeRQLFDetRate
+for (cell in cells) {
+      print (cell)
+      
+      ident.1 <- paste(stimSample, cell, sep='_')
+      ident.2 <- paste(ctrlSample, cell, sep='_')
+      
+      seurat.integrated.subset <- subset(seurat.integrated,
+                                         subset = Encode_Blueprint_Subtype == cell)
+      
+      expr.data <- as.matrix(seurat.integrated.subset[['RNA']]@data)
+      raw.data <- as.matrix(seurat.integrated.subset[['RNA']]@counts)
+      meta.data <- seurat.integrated.subset@meta.data
+      
+      cell1 <- rownames(meta.data)[meta.data$sample_cell==ident.1]
+      cell2 <- rownames(meta.data)[meta.data$sample_cell==ident.2]
+      
+      
+      #if (length(cell1) < 3 | length(cell2) < 3) {
+      #  next
+      #}
+      
+      #idx <- which(rowSums(expr.data>1) > ncol(expr.data)*0.05)
+      
+      idx <- which(rowSums(expr.data>0.5) > ncol(expr.data)*0.1)
+      
+      genes <- rownames(expr.data)[idx]
+      
+      mito <- grep(pattern = "^MT-", x = genes, value = FALSE)
+      ribo <- grep(pattern = "^RPS|^RPL|^MRPL", x = genes, value = FALSE)
+      
+      genes <-genes[-c(mito, ribo)]
+      
+      expr.data <- expr.data[genes,]
+      raw.data <- raw.data[genes,]
+      
+      group <- factor(meta.data$sample, levels=c(ctrlSample, stimSample))
+      names(group) <- rownames(meta.data)
+      
+      ###
+      idx <- which(meta.data$sample %in% c(stimSample, ctrlSample))
+      
+      L <- list()
+      
+      L$count <- raw.data[,idx]
+      L$tpm <- expr.data[,idx]
+      L$condt <- group[idx]
+      
+      grp <- L$condt
+      
+      dge <- DGEList(L$count, group = L$condt)
+      dge <- calcNormFactors(dge)
+      
+      cdr <- scale(colMeans(L$count > 0))
+      
+      design <- model.matrix(~ cdr + L$condt)
+      dge <- estimateDisp(dge, design = design)
+      fit <- glmQLFit(dge, design = design)
+      qlf <- glmQLFTest(fit)
+      
+      degTable <- topTags(qlf, n = Inf, sort.by = 'p', adjust.method = 'BH')
+      degTable <- degTable[[1]]
+      
+      
+      genes <- rownames(degTable)
+      
+      exprSumList <- pbmclapply(
+        X = genes,
+        FUN = function(gene) {exprSummaryFun(expr.data, gene, cell1, cell2)},
+        mc.cores = 4
+      )
+      
+      
+      exprSumTable <- Reduce(rbind, exprSumList)
+      degTable <- cbind(exprSumTable, degTable)
+      degTable <- cbind(length(cell2), degTable)
+      degTable <- cbind(length(cell1), degTable)
+      colnames(degTable)[1:4] <- c(paste0('n_', c(stimSample, ctrlSample)),
+                                   paste0('mean_', c(stimSample, ctrlSample)))
+      
+      rownames(degTable) <- genes
+      
+      degTable$logFC_TP10K <- degTable[,3]-degTable[,4]
+      
+      degTable$Ensembl <- feature.names[rownames(degTable),]$V1
+      
+      degTable$FDR <- p.adjust(degTable$PValue, method='BH')
+      degTable$Bonferroni <- p.adjust(degTable$PValue, method='bonferroni')
+      degTable <- degTable[order(degTable$FDR, decreasing = F),]
+      
+      fl = paste(stimSample, ctrlSample, cell, 'edgeRQLFDetRate_filter_TP10K0.5_Cell5_noMito_noRibo', sep='_')
+      
+      write.table(degTable, file=paste0('report/edgeR10/', fl, '.txt'),
+                  sep='\t', quote=F)
+      
+}
+
+
+
+
+
+
+
+
+
+
+
 ## barplot
 
 degForPlot <- c()
