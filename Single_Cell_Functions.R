@@ -37,6 +37,44 @@ Read10XRL <- function(data.dir=NULL) {
 }
 
 
+### DEG functions
+
+wilcoxFun <- function(expr.data, group, gene, cell1, cell2) {
+  
+  meanX <- log2(mean(expm1(expr.data[gene,cell1])))
+  meanY <- log2(mean(expm1(expr.data[gene,cell2])))
+  
+  test <- wilcox.test(expr.data[gene,] ~ group)
+  
+  pVal <- test$p.value
+  #est <- as.numeric(format(tTest$estimate, digits = 3))
+  t <- as.numeric(format(test$statistic, digits = 3))
+  
+  #degTable <- rbind(degTable, c(length(cell1), length(cell2), meanX, meanY, t, pVal))
+  return (c(length(cell1), length(cell2), meanX, meanY, t, pVal))
+  
+}
+
+
+
+exprSummaryFun <- function(expr.data, gene, cell1, cell2) {
+  
+  meanX <- log2(mean(expm1(expr.data[gene,cell1])))
+  meanY <- log2(mean(expm1(expr.data[gene,cell2])))
+  
+  return (c(meanX, meanY))
+  
+}
+
+
+
+ttestFun <- function(expr.data, group, gene) {
+  test <- t.test(expr.data[gene,] ~ group)
+  ttest.pVal <- test$p.value
+  t <- as.numeric(format(test$statistic, digits = 3))
+  return (c(t, ttest.pVal))
+}
+
 # Google colors
 google.red <- '#EA4335'
 google.yellow <- '#FBBC05'
