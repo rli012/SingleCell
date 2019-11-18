@@ -62,6 +62,46 @@ ht <- Heatmap(as.matrix(sig.exprs), name='Log2(TP10K)', show_row_names = TRUE, s
 ht
 
 
+
+### Violin plot for marker genes
+
+dataForViolinPlot <- data.frame(expr=as.numeric(t(sig.exprs)),
+                                cell.type=rep(cell_type_label, length(markers.to.plot)),
+                                gene=rep(markers.to.plot, each=length(cell_type_label)),
+                                stringsAsFactors = F)
+
+dataForViolinPlot$gene <- factor(dataForViolinPlot$gene, levels=markers.to.plot)
+
+ggplot(data=dataForViolinPlot, aes(x=cell.type, y=expr)) +
+  geom_violin(aes(fill=cell.type, color=cell.type), lwd=0.1, #size=0.5,
+              outlier.shape = NA, outlier.size = NA,#outlier.colour = 'black',
+              outlier.fill = NA, width=0.8) +
+  coord_flip() +
+  scale_y_continuous(position = "right") +
+  scale_x_discrete(position = 'bottom') +
+  #geom_jitter(size=0.01, width = 0.1) +
+  facet_wrap(~gene, nrow=1, strip.position = 'bottom') +
+  labs(x='', y=expression('Log'[2]*'(TP10K+1)')) +
+  theme_bw()+
+  theme(legend.title = element_blank(),
+        legend.position = 'none') +
+  #theme_set(theme_minimal()) #
+  theme(axis.title=element_blank(),
+        
+        axis.text = element_text(color='black', size=14),
+        axis.text.x = element_blank(),
+        strip.text = element_text(angle = 45, size=12, 
+                                  hjust=0.3),
+        strip.background = element_blank()) +
+  theme(axis.line = element_line(colour = "black"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank()) +
+  theme(panel.spacing = unit(0, "lines")) +
+  theme(plot.margin =  margin(t = 0.25, r = 0.25, b = 0.25, l = 0.25, unit = "cm"))
+
+
+
 ########### Cell composition
 
 dataForBarPlot$Encode_Blueprint_Subtype <- as.character(dataForBarPlot$Encode_Blueprint_Subtype)
