@@ -161,3 +161,59 @@ ggplot(data=dataForBarPlot, aes(x=sample, y=proportion,
   theme(plot.margin =  margin(t = 0.25, r = 0.25, b = 0.25, l = 1, unit = "cm"))
 
 # 800*500
+
+
+
+dataForBubblePlot <- data.frame(dataForBubblePlot, stringsAsFactors = F)
+dataForBubblePlot
+
+colnames(dataForBubblePlot) <- c('ifng', 'total', 'ratio', 'cell', 'sample', 'treatment', 'mean.all', 'mean.expressed')
+
+dataForBubblePlot$total <- as.numeric(as.character(dataForBubblePlot$total))
+dataForBubblePlot$ifng <- as.numeric(as.character(dataForBubblePlot$ifng))
+
+dataForBubblePlot$mean.all <- round(as.numeric(as.character(dataForBubblePlot$mean.all)),2)
+dataForBubblePlot$mean.expressed <- round(as.numeric(as.character(dataForBubblePlot$mean.expressed)),2)
+
+
+dataForBubblePlot$ratio <- round(as.numeric(as.character(dataForBubblePlot$ratio))*100,2)
+dataForBubblePlot
+
+dataForBubblePlot$label <- paste(paste0(dataForBubblePlot$ratio, '%'), ' (', paste(dataForBubblePlot$ifng, dataForBubblePlot$total, sep=' / '), ')', sep='')
+dataForBubblePlot$label
+
+exprMax <- max(dataForBubblePlot$mean.all)
+exprMax
+
+dataForBubblePlot
+
+cols = brewer.pal(4, "Reds")
+cols = colorRampPalette(cols)(10)
+col_fun = colorRampPalette(rev(c(cols[10],cols[1])), space = "Lab")(2)
+
+ggplot(dataForBubblePlot, mapping=aes(x=cell, y=treatment, #y=-log10(Benjamini), #y=Fold.Enrichment
+                                      color=mean.all,size=ratio)) +
+  geom_point()+ #coord_flip() +
+  scale_x_discrete(limits=unique(dataForBubblePlot$cell)) +
+  scale_y_discrete(limits=rev(unique(dataForBubblePlot$treatment))) +
+  #scale_x_discrete(limits=Order)+
+  scale_colour_gradientn(limits=c(0,exprMax+0.07),
+                         colors= c(col_fun[1],col_fun[2])) + #
+  #facet_wrap(~Comparison) +
+  #facet_grid(Regulation~Comparison) + # scales=free
+  xlab('')+ylab('') +
+  guides(size = guide_legend(order=2, title='Percent\nExpressed'),
+         colour = guide_colourbar(order=1, title = 'Average\nExpression')) + #'P Value\n(Benjamini)'))
+  theme_bw()+theme(axis.line = element_line(colour = "black"),
+                   panel.grid.minor = element_blank(),
+                   #panel.border = element_rect(colour='black'),
+                   panel.border = element_blank(),
+                   panel.background = element_blank()) +
+  ggtitle("") + theme(plot.title = element_text(hjust = 0.5, size=20)) +
+  theme(axis.text=element_text(size=14, color='black'),
+        axis.text.x =element_text(size=14, color='black', angle=90, hjust=1),
+        axis.title=element_text(size=15)) +
+  theme(legend.text = element_text(size = 12),
+        legend.title = element_text(size = 12)) +
+  theme(strip.text = element_text(size = 14),
+        legend.key.size = unit(0.8,'cm'))
