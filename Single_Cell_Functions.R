@@ -1,3 +1,10 @@
+# Google colors
+google.colors <- c('#EA4335', '#FBBC05', '#34A853', '#4285F4')
+
+google.red <- '#EA4335'
+google.yellow <- '#FBBC05'
+google.green <- '#34A853'
+google.blue <- '#4285F4'
 
 
 # Read Expression Matrix
@@ -74,13 +81,6 @@ ttestFun <- function(expr.data, group, gene) {
   t <- as.numeric(format(test$statistic, digits = 3))
   return (c(t, ttest.pVal))
 }
-
-# Google colors
-google.red <- '#EA4335'
-google.yellow <- '#FBBC05'
-google.green <- '#34A853'
-google.blue <- '#4285F4'
-
 
 
 #########
