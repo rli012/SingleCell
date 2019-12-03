@@ -85,7 +85,15 @@ ttestFun <- function(expr.data, group, gene) {
 
 #########
 ## The first letter of the first world
-capitalizeRL <- function(x) {
+capitalizeFun <- function(x, to.lower=TRUE) {
+  if (!is.character(x)) {
+    x <- as.character(x)
+  }
+  
+  if (to.lower==TRUE) {
+    x <- tolower(x)
+  }
+  
   substr(x,1,1) <- toupper(substr(x,1,1))
   return(x)
 }
