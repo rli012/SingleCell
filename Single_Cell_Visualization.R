@@ -217,3 +217,109 @@ ggplot(dataForBubblePlot, mapping=aes(x=cell, y=treatment, #y=-log10(Benjamini),
         legend.title = element_text(size = 12)) +
   theme(strip.text = element_text(size = 14),
         legend.key.size = unit(0.8,'cm'))
+
+
+### scatter plot
+
+  stimSample <- comparison$stimSample[i]
+  ctrlSample <- comparison$ctrlSample[i]
+  
+  seurat.integrated.subset <- subset(seurat.integrated,
+                                     subset = IFNG == '+' & sample %in% c(ctrlSample, stimSample))
+  
+  seurat.integrated.subset$sample <- factor(seurat.integrated.subset$sample, levels=c(ctrlSample, stimSample))
+  
+  Idents(seurat.integrated.subset) <- 'sample'
+  
+  fl = paste(stimSample, ctrlSample, c, g, 'MASTcpmDetRate_filter_TP10K0.5_Cell10_noMito_noRibo', sep='_')
+  fl <- file.path('report/IFNG', paste0(fl, '.txt'))
+  
+  degTable <- read.table(fl, sep='\t', stringsAsFactors = F, header = T)
+  
+  avg <- AverageExpression(seurat.integrated.subset, show.progress = FALSE) # mean(expm1())
+  
+  avg.t.cells <- log2(avg$RNA+1)
+  avg.t.cells
+  
+  #avg.t.cells <- log1p(AverageExpression(seurat.integrated.subset, verbose = FALSE)$RNA)
+  
+  avg.t.cells <- avg.t.cells[rownames(degTable),]
+  colnames(avg.t.cells) <- c('ctrlSample', 'stimSample')
+  
+  avg.t.cells$gene <- rownames(avg.t.cells)
+  avg.t.cells$gene <- gsub('[dup]','',avg.t.cells$gene, fixed=T)
+  
+  genes.to.label1 <- rownames(degTable[degTable$FDR<=pThreshold & degTable$logFC_TP10K>log2(fcThreshold),])
+  genes.to.label2 <- rownames(degTable[degTable$FDR<=pThreshold & degTable$logFC_TP10K<log2(fcThreshold)*-1,])
+  
+  print (length(genes.to.label1))
+  print (length(genes.to.label2))
+  #print (genes.to.label2)
+  #genes.to.label1 <- rownames(deg[deg$p_val<=0.01 & deg$avg_logFC>0,])
+  #genes.to.label2 <- rownames(deg[deg$p_val<=0.01 & deg$avg_logFC<0,])
+  
+  avg.t.cells$sig <- 'NS'
+  if (length(genes.to.label1)>0) {
+    avg.t.cells[genes.to.label1,]$sig <- 'UP'
+  }
+  
+  if (length(genes.to.label2)>0) {
+    avg.t.cells[genes.to.label2,]$sig <- 'DOWN'
+  }
+  
+  avg.t.cells$sig <- factor(avg.t.cells$sig)
+  
+  nx <- degTable[1,2]
+  ny <- degTable[1,1]
+  
+  if (length(genes.to.label1)>0 & length(genes.to.label2)>0) {
+    val <- c("green3", "black", "red")
+  } else if (length(genes.to.label1)>0 & length(genes.to.label2)==0) {
+    val <- c("black", "red")
+  } else if (length(genes.to.label1)==0 & length(genes.to.label2)>0) {
+    val <- c("green3", "black")
+  } else if (length(genes.to.label1)==0 & length(genes.to.label2)==0) {
+    val <- c("black")
+  }
+  
+  
+  genes.to.label1.top <- intersect(genes.to.label1, rownames(degTable)[1:30])
+  genes.to.label2.top <- intersect(genes.to.label2, rownames(degTable)[1:30])
+  
+  fig.title <- paste0(c, ' T cells (', g, '+)')
+  
+  p1 <- ggplot(avg.t.cells, aes(ctrlSample, stimSample)) + geom_point(aes(color=sig), size=0.5) + ggtitle(fig.title) +
+    geom_point(data = subset(avg.t.cells, sig == 'UP'),
+               aes(ctrlSample, stimSample, color=sig), size=0.5) +
+    geom_point(data = subset(avg.t.cells, sig == 'DOWN'),
+               aes(ctrlSample, stimSample, color=sig), size=0.5) +
+    
+    scale_color_manual(values = val) +
+    geom_abline(intercept = 0, slope=1, color='blue', linetype='dashed')+
+    labs(x=paste0(ctrlSample, ' (N=', nx, ')'),y=paste0(stimSample, ' (N=', ny, ')')) +
+    
+    geom_text_repel(data=subset(avg.t.cells, avg.t.cells$gene %in% genes.to.label1.top), 
+                    aes(label=gene), segment.alpha = 0.4,size = 3, color='red',
+                    nudge_y = 1) +
+    geom_text_repel(data=subset(avg.t.cells, avg.t.cells$gene %in% genes.to.label2.top), 
+                    aes(label=gene), segment.alpha = 0.4,size = 3, color='darkgreen',
+                    nudge_x = 1) +
+    theme(legend.position = 'none') +
+    theme_bw()+
+    theme(legend.title = element_blank(),
+          legend.text = element_text(size=14),
+          legend.position = 'none') +
+    theme(axis.title=element_text(size=16),
+          axis.text = element_text(color='black', size=14)) +
+    theme(plot.title = element_text(hjust = 0.5, size=16, face='bold')) +
+    theme(axis.line = element_line(colour = "black"),
+          panel.border = element_blank(),
+          panel.background = element_blank(),
+          panel.grid = element_blank(),
+          panel.grid.major = element_blank()) #+
+  #theme(plot.margin =  margin(t = 0.25, r = 0.25, b = 0.25, l = 1, unit = "cm"))
+  
+  
+  png(filename = gsub('.txt','.repel.png', fl), width = 500, height = 500, res = 100)
+  print (p1)
+  dev.off()
