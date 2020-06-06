@@ -2,6 +2,10 @@
 
 ## CITE-seq
 
+## Tapestri (mission bio)
+
+## Spatial transcriptomics
+
 ## Courses/Tutorials
 
 1. Broad Institute: [Analysis of Single Cell RNAseq Data](https://broadinstitute.github.io/2019_scWorkshop/)
