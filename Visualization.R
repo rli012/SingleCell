@@ -1,4 +1,41 @@
 
+dataForBarPlot <- annotation %>% group_by(celltype) %>%
+  summarise(freq=length(celltype))
+
+o <- order(dataForBarPlot$freq, decreasing = T)
+
+dataForBarPlot$celltype <- factor(dataForBarPlot$celltype, levels=dataForBarPlot$celltype[o])
+
+
+ggplot(data=dataForBarPlot, aes(x=celltype, y=freq, fill=celltype, color=celltype)) +
+  geom_bar(stat='identity', width=.6) + #coord_flip()
+  #geom_errorbar(aes(ymin=expr, ymax=expr+sd), width=.2, size=0.5, #expr-sd
+  #              position=position_dodge(.9)) +
+  labs(x='', y=expression('Number of Cells')) +
+  #scale_y_continuous(trans = 'sqrt',
+  #                   breaks = c(0,2.5,50,250,750),
+  #                   labels = c(0,2.5,50,250,750)) +
+  #scale_y_sqrt() +
+  #scale_y_continuous(trans='log2') +
+  #scale_fill_manual(values = rep('black',nrow(dataForBarPlot))) +
+  #scale_color_manual(values = rep('black',nrow(dataForBarPlot))) +
+  theme_bw()+
+  theme(legend.title = element_blank(),
+        legend.text = element_text(size=14),
+        legend.position = 'none') +
+  theme(axis.title=element_text(size=16),
+        axis.text = element_text(color='black', size=14),
+        axis.text.x = element_text(angle = 45, hjust=1)) +
+  theme(axis.line = element_line(colour = "black"),
+        panel.border = element_blank(),
+        panel.background = element_blank(),
+        panel.grid = element_blank(),
+        panel.grid.major = element_blank()) +
+  theme(plot.margin =  margin(t = 0.25, r = 0.25, b = 0.25, l = 0.25, unit = "cm"))
+
+
+
+
 cell.type <- factor(annotation$celltype, levels=unique(annotation$celltype))
 cell.type
 
