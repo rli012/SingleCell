@@ -130,3 +130,19 @@ ggplot(dataForBubblePlot, mapping=aes(x=cell.type, y=gene, #y=-log10(Benjamini),
         legend.title = element_text(size = 12)) +
   theme(strip.text = element_text(size = 14),
         legend.key.size = unit(0.8,'cm'))
+
+
+
+ggplot(df,aes(x=TSNE.1,y=TSNE.2,color=patient)) +
+  geom_point(size=0.1)+
+  #scale_color_gradient(low="lightgrey", high="blue") +
+  #facet_wrap(~variable,ncol=4) +
+  labs(color = 'Patient', x='tSNE_1', y='tSNE_2') +
+  guides(colour = guide_legend(override.aes = list(size=3))) +
+  theme_classic()+
+  theme(strip.background = element_blank(), 
+        strip.text = element_text(size=14, face='bold'),
+        axis.text=element_text(size=14, color='black'),
+        axis.title=element_text(size=16),
+        legend.text = element_text(size=10),
+        legend.title = element_text(size=12))
